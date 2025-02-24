@@ -11,6 +11,7 @@ class Collision:
             pygame.time.wait(1500)
             game_info.started = False
             player_car.reset()
+            return "menu"
 
         if player_car.collide(level.finish_mask, 130, 250):
             blit_text_center(win, font, "You won! Congratulations!")
@@ -18,3 +19,4 @@ class Collision:
             pygame.time.wait(1500)
             game_info.started = False
             player_car.reset()
+            return "next_level"
