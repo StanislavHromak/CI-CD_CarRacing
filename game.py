@@ -67,7 +67,7 @@ class Game:
         car_image_path = f"imgs/{self.settings.car_color}-car.png"
         self.car = car.Car(4, 4, car_image_path)
         self.win = pygame.display.set_mode((self.level.width, self.level.height))
-        pygame.display.set_caption(f"Racing Game.")
+        pygame.display.set_caption(f"Car Racing")
         clock = pygame.time.Clock()
 
         self.settings.reset_lives()
@@ -78,14 +78,14 @@ class Game:
 
             if not self.game_info.started:
                 self.draw()
-                blit_text_center(self.win, pygame.font.SysFont("comicsans", 40),
-                                 "Натисніть на будь-яку клавішу для старту!", (255, 0, 255))
+                blit_text_center(self.win, pygame.font.SysFont("arial", 40),
+                                 "Натисніть на будь-яку клавішу для старту!", (255, 255, 0))
                 pygame.display.update()
                 continue
 
             self.car.move()
             result = cl.Collision.handle_collision(self.car, self.game_info, self.level, self.win,
-                                               pygame.font.SysFont("comicsans", 44),
+                                               pygame.font.SysFont("arial", 40, bold=True),
                                                self.settings.lives, self.settings.difficulty)
 
             if isinstance(result, int):  # Якщо повернуто число (оновлені життя)
@@ -100,7 +100,7 @@ class Game:
             self.draw()
 
     def show_records(self):
-        font = pygame.font.SysFont("comicsans", 44)
+        font = pygame.font.SysFont("times", 44)
         running = True
         while running:
             self.win.fill((0, 0, 0))
@@ -149,14 +149,12 @@ class Game:
     def draw(self):
         self.level.draw(self.win)
 
-        # Створюємо шрифт
-        font = pygame.font.SysFont("comics", 30)
+        font = pygame.font.SysFont("times", 30)
 
         level_text = font.render(f"Рівень {self.level_number}", 1, (255, 255, 0))
         timer_text = font.render(f"Таймер: {self.game_info.get_time()}s", 1, (255, 255, 0))
         lives_text = font.render(f"Кількість життів: {self.settings.lives}", 1, (255, 255, 0))
 
-        # Розташовуємо рядки один під одним
         self.win.blit(level_text, (10, 600))
         self.win.blit(timer_text, (10, 640))
         self.win.blit(lives_text, (10, 680))

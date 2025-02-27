@@ -6,7 +6,7 @@ class SettingsMenu:
         self.width = width
         self.height = height
         self.settings = settings
-        self.font = pygame.font.SysFont("comicsans", 40)
+        self.font = pygame.font.SysFont("times", 40)
         self.options = ["Червоний", "Білий", "Фіолетовий", "Сірий", "Зелений"]
         self.difficulties = ["Простий", "Середній", "Складний"]
 
@@ -28,7 +28,7 @@ class SettingsMenu:
         self.selected_difficulty = self.difficulties.index(
             current_difficulty if current_difficulty in self.difficulties else "Складний")
 
-        self.selected_item = 0  # 0 - колір, 1 - складність, 2 - зберегти
+        self.selected_item = 0
 
     def run(self):
         running = True
@@ -39,7 +39,7 @@ class SettingsMenu:
                     running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
-                        self.selected_item = (self.selected_item + 1) % 3  # 3 елементи: колір, складність, зберегти
+                        self.selected_item = (self.selected_item + 1) % 3
                     elif event.key == pygame.K_UP:
                         self.selected_item = (self.selected_item - 1) % 3
                     elif event.key == pygame.K_LEFT:
@@ -52,15 +52,12 @@ class SettingsMenu:
                             self.selected_color = (self.selected_color + 1) % len(self.options)
                         elif self.selected_item == 1:  # Складність
                             self.selected_difficulty = (self.selected_difficulty + 1) % len(self.difficulties)
-                    elif event.key == pygame.K_RETURN:
-                        if self.selected_item == 2:  # Зберегти
-                            self.settings.set_car_color(self.options[self.selected_color])
-                            self.settings.set_difficulty(self.difficulties[self.selected_difficulty])
-                            running = False
-                        elif self.selected_item == 0:  # Колір
-                            self.settings.set_car_color(self.options[self.selected_color])
-                        elif self.selected_item == 1:  # Складність
-                            self.settings.set_difficulty(self.difficulties[self.selected_difficulty])
+                    elif event.key == pygame.K_RETURN and self.selected_item == 2:  # Зберегти при Enter
+                        self.settings.set_car_color(self.options[self.selected_color])
+                        self.settings.set_difficulty(self.difficulties[self.selected_difficulty])
+                        running = False
+                    else:  # Будь-яка інша клавіша завершує без збереження
+                        running = False
 
     def draw(self):
         self.win.fill((0, 0, 0))

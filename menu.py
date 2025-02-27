@@ -6,7 +6,8 @@ class Menu:
         self.win = win
         self.width = width
         self.height = height
-        self.font = pygame.font.SysFont("comicsans", 50)
+        self.font = pygame.font.SysFont("times", 50)
+        self.title_font = pygame.font.SysFont("arial", 70, bold=True)
         self.buttons = [
             ("Почати гру", (self.width // 2, 200)),
             ("Налаштування", (self.width // 2, 300)),
@@ -17,6 +18,9 @@ class Menu:
 
     def draw(self):
         self.win.fill((0, 0, 0))
+        title_text = self.title_font.render("CAR RACING", True, (255, 0, 0))  # Білий колір
+        title_rect = title_text.get_rect(center=(self.width // 2, 100))
+        self.win.blit(title_text, title_rect)
         for i, (text, pos) in enumerate(self.buttons):
             color = (255, 255, 255) if i != self.selected else (255, 255, 0)
             text_surf = self.font.render(text, True, color)
