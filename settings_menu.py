@@ -56,7 +56,7 @@ class SettingsMenu:
                         if self.selected_item == 2:  # Зберегти
                             self.settings.set_car_color(self.options[self.selected_color])
                             self.settings.set_difficulty(self.difficulties[self.selected_difficulty])
-                            running = False  # Автоматично виходимо до меню
+                            running = False
                         elif self.selected_item == 0:  # Колір
                             self.settings.set_car_color(self.options[self.selected_color])
                         elif self.selected_item == 1:  # Складність
@@ -64,13 +64,11 @@ class SettingsMenu:
 
     def draw(self):
         self.win.fill((0, 0, 0))
-        # Колір машини
+
         color_text = self.font.render(f"Колір машини: {self.options[self.selected_color]}", True,
                                       (255, 255, 0) if self.selected_item == 0 else (255, 255, 255))
-        # Рівень складності
         difficulty_text = self.font.render(f"Рівень складності: {self.difficulties[self.selected_difficulty]}", True,
                                            (255, 255, 0) if self.selected_item == 1 else (255, 255, 255))
-        # Кнопка збереження
         save_text = self.font.render("Зберегти", True,
                                      (255, 255, 0) if self.selected_item == 2 else (255, 255, 255))
 
