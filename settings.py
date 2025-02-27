@@ -1,5 +1,5 @@
 class Settings:
-    def init(self):
+    def __init__(self):
         self.car_color = "red"
         self.difficulty = "складний"  # За замовчуванням
         self.lives = 1

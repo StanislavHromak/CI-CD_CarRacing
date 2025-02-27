@@ -5,7 +5,7 @@ from utils import scale_image, blit_rotate_center
 class Car:
     START_POS = (180, 200)
 
-    def init(self, max_vel, rotation_vel, image_path):
+    def __init__(self, max_vel, rotation_vel, image_path):
         self.img = scale_image(pygame.image.load(image_path), 0.55)
         self.max_vel = max_vel
         self.vel = 0

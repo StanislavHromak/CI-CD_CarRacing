@@ -2,7 +2,7 @@ import pygame
 from utils import scale_image
 
 class Level:
-    def init(self):
+    def __init__(self):
         self.grass = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
         self.track = scale_image(pygame.image.load("imgs/track.png"), 800/900)
         self.track_border = scale_image(pygame.image.load("imgs/track-border.png"), 800/900)

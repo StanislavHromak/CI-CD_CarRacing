@@ -2,6 +2,8 @@ import pygame
 import level as l
 import game_info as gi
 import collision as cl
+import settings as st
+import settings_menu as stm
 import car
 import menu as mn
 from utils import blit_text_center
@@ -15,21 +17,28 @@ class Game:
         self.running = True
         self.fps = fps
         self.level_number = 1
+        self.settings = st.Settings() # Додано до налаштувань
 
         # Меню
         self.width, self.height = 800, 600
         self.win = pygame.display.set_mode((self.width, self.height))
         self.menu = mn.Menu(self.win, self.width, self.height)
+        self.settings_menu = stm.SettingsMenu(self.win, self.width, self.height, self.settings) # Додано до налаштувань
 
     def run(self):
         while self.running:
             selected_option = self.show_menu()
             if selected_option == 0:  # Почати гру
                 self.play_levels()
+            elif selected_option == 1:  # Налаштування
+                self.show_settings()
             elif selected_option == 3:  # Вихід
                 self.running = False
 
         pygame.quit()
+
+    def show_settings(self):
+        self.settings_menu.run() # Додано до налаштувань
 
     def show_menu(self):
         while self.running:
@@ -53,10 +62,14 @@ class Game:
     def play_level(self):
         self.level = l.Level()
         self.game_info = gi.GameInfo()
-        self.car = car.Car(4, 4)
+        car_image_path = f"imgs/{self.settings.car_color}-car.png"
+        self.car = car.Car(4, 4, car_image_path)
         self.win = pygame.display.set_mode((self.level.width, self.level.height))
         pygame.display.set_caption(f"Racing Game! Level {self.level_number}")
         clock = pygame.time.Clock()
+
+        # Скидаємо життя перед початком рівня
+        self.settings.reset_lives()
 
         while self.running:
             clock.tick(self.fps)
@@ -70,15 +83,18 @@ class Game:
 
             self.car.move()
             result = cl.Collision.handle_collision(self.car, self.game_info, self.level, self.win,
-                                                pygame.font.SysFont("comicsans", 44))
+                                               pygame.font.SysFont("comicsans", 44),
+                                               self.settings.lives, self.settings.difficulty)
+
+            # Оновлюємо кількість життів у settings
+            if isinstance(result, int):  # Якщо повернуто число (оновлені життя)
+                self.settings.lives = result
+            elif result == "menu":
+                return "menu"
+            elif result == "next_level":
+                return "next_level"
 
             self.draw()
-
-            # Якщо гра завершена (перемога або поразка)
-            if result == "menu":  # Програш → вихід у меню
-                return "menu"
-            elif result == "next_level":  # Перемога → наступний рівень
-                return "next_level"
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -93,7 +109,19 @@ class Game:
 
     def draw(self):
         self.level.draw(self.win)
-        time_text = pygame.font.SysFont("comicsans", 44).render(f"Level {self.level_number} - Time: {self.game_info.get_time()}s", 1, (255, 255, 255))
-        self.win.blit(time_text, (10, self.level.height - 75))
+
+        # Створюємо шрифт
+        font = pygame.font.SysFont("comicsans", 44)
+
+        # Текст для рівня, таймера і життів
+        level_text = font.render(f"Рівень {self.level_number}", 1, (255, 255, 255))
+        timer_text = font.render(f"Таймер: {self.game_info.get_time()}s", 1, (255, 255, 255))
+        lives_text = font.render(f"Кількість життів: {self.settings.lives}", 1, (255, 255, 255))
+
+        # Розташовуємо рядки один під одним
+        self.win.blit(level_text, (10, 600))
+        self.win.blit(timer_text, (10, 650))
+        self.win.blit(lives_text, (10, 700))
+
         self.car.draw(self.win)
         pygame.display.update()
