@@ -16,9 +16,9 @@ class Menu:
         self.selected = 0  # Індекс обраної кнопки
 
     def draw(self):
-        self.win.fill((0, 0, 0))  # Чорний фон
+        self.win.fill((0, 0, 0))
         for i, (text, pos) in enumerate(self.buttons):
-            color = (255, 255, 255) if i != self.selected else (255, 255, 0)  # Жовтий для обраної кнопки
+            color = (255, 255, 255) if i != self.selected else (255, 255, 0)
             text_surf = self.font.render(text, True, color)
             text_rect = text_surf.get_rect(center=pos)
             self.win.blit(text_surf, text_rect)
@@ -33,5 +33,5 @@ class Menu:
             self.selected = (self.selected - 1) % len(self.buttons)
             time.sleep(0.2)
         elif keys[pygame.K_RETURN]:
-            return self.selected  # Повертає індекс обраної кнопки
+            return self.selected
         return None

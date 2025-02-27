@@ -28,7 +28,7 @@ class Car:
         self.move()
 
     def move_backward(self):
-        self.vel = max(self.vel - self.acceleration, -self.max_vel / 2)
+        self.vel = max(self.vel - self.acceleration, -self.max_vel / 3)
         self.move()
 
     def move(self):
@@ -37,7 +37,7 @@ class Car:
         self.x -= math.sin(radians) * self.vel
 
     def reduce_speed(self):
-        self.vel = max(self.vel - self.acceleration / 2, 0)
+        self.vel = max(self.vel - self.acceleration / 3, 0)
         self.move()
 
     def collide(self, mask, x=0, y=0):

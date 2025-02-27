@@ -8,8 +8,7 @@ if __name__ == "__main__":
         "--difficulty",
         type=str,
         choices=["easy", "medium", "hard"],
-        default="hard",
-        help="Set the game difficulty: 'easy' (10 lives), 'medium' (5 lives), 'hard' (1 life)"
+        default="easy",
     )
     args = parser.parse_args()
 

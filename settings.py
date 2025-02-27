@@ -20,7 +20,7 @@ class Settings:
             self.lives = 10
         elif self.difficulty == "середній":
             self.lives = 5
-        else:  # "складний"
+        else:
             self.lives = 1
 
     def reset_lives(self):

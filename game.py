@@ -78,7 +78,8 @@ class Game:
 
             if not self.game_info.started:
                 self.draw()
-                blit_text_center(self.win, pygame.font.SysFont("comicsans", 44), "Press any key to start!")
+                blit_text_center(self.win, pygame.font.SysFont("comicsans", 40),
+                                 "Натисніть на будь-яку клавішу для старту!", (255, 0, 255))
                 pygame.display.update()
                 continue
 
@@ -109,8 +110,7 @@ class Game:
                 self.win.blit(text,
                               (self.width // 2 - text.get_width() // 2, self.height // 2 - text.get_height() // 2))
             else:
-                # Відображаємо найвищий досягнутий рівень
-                level_text = font.render(f"Найвищий рівень: {record_info['level']}", True, (255, 255, 255))
+                level_text = font.render(f"Найвищий пройдений рівень: {record_info['level']}", True, (255, 255, 255))
                 self.win.blit(level_text, (self.width // 2 - level_text.get_width() // 2, self.height // 2 - 200))
 
                 # Відображаємо найкращі часи для кожного рівня
@@ -150,17 +150,16 @@ class Game:
         self.level.draw(self.win)
 
         # Створюємо шрифт
-        font = pygame.font.SysFont("comicsans", 44)
+        font = pygame.font.SysFont("comics", 30)
 
-        # Текст для рівня, таймера і життів
-        level_text = font.render(f"Рівень {self.level_number}", 1, (255, 255, 255))
-        timer_text = font.render(f"Таймер: {self.game_info.get_time()}s", 1, (255, 255, 255))
-        lives_text = font.render(f"Кількість життів: {self.settings.lives}", 1, (255, 255, 255))
+        level_text = font.render(f"Рівень {self.level_number}", 1, (255, 255, 0))
+        timer_text = font.render(f"Таймер: {self.game_info.get_time()}s", 1, (255, 255, 0))
+        lives_text = font.render(f"Кількість життів: {self.settings.lives}", 1, (255, 255, 0))
 
         # Розташовуємо рядки один під одним
         self.win.blit(level_text, (10, 600))
-        self.win.blit(timer_text, (10, 650))
-        self.win.blit(lives_text, (10, 700))
+        self.win.blit(timer_text, (10, 640))
+        self.win.blit(lives_text, (10, 680))
 
         self.car.draw(self.win)
         pygame.display.update()
