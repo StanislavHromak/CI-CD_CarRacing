@@ -3,11 +3,10 @@ import math
 from utils import scale_image, blit_rotate_center
 
 class Car:
-    IMG = scale_image(pygame.image.load("imgs/red-car.png"), 0.55)
     START_POS = (180, 200)
 
-    def __init__(self, max_vel, rotation_vel):
-        self.img = self.IMG
+    def __init__(self, max_vel, rotation_vel, image_path):
+        self.img = scale_image(pygame.image.load(image_path), 0.55)
         self.max_vel = max_vel
         self.vel = 0
         self.rotation_vel = rotation_vel
@@ -41,6 +40,16 @@ class Car:
         self.vel = max(self.vel - self.acceleration / 2, 0)
         self.move()
 
+    def collide(self, mask, x=0, y=0):
+        car_mask = pygame.mask.from_surface(self.img)
+        offset = (int(self.x - x), int(self.y - y))
+        return mask.overlap(car_mask, offset)
+
+    def reset(self):
+        self.x, self.y = self.START_POS
+        self.angle = 0
+        self.vel = 0
+
     def handle_movement(self, keys):
         moved = False
         if keys[pygame.K_a]:
@@ -55,13 +64,3 @@ class Car:
             self.move_backward()
         if not moved:
             self.reduce_speed()
-
-    def collide(self, mask, x=0, y=0):
-        car_mask = pygame.mask.from_surface(self.img)
-        offset = (int(self.x - x), int(self.y - y))
-        return mask.overlap(car_mask, offset)
-
-    def reset(self):
-        self.x, self.y = self.START_POS
-        self.angle = 0
-        self.vel = 0
