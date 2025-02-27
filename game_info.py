@@ -10,4 +10,7 @@ class GameInfo:
         self.start_time = time.time()
 
     def get_time(self):
-        return round(time.time() - self.start_time) if self.started else 0
+        if self.started:
+            elapsed = round(time.time() - self.start_time)
+            return elapsed
+        return 0
