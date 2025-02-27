@@ -2,7 +2,7 @@ import pygame
 import time
 
 class Menu:
-    def __init__(self, win, width, height):
+    def init(self, win, width, height):
         self.win = win
         self.width = width
         self.height = height
