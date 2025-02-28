@@ -10,22 +10,32 @@ import menu as mn
 from utils import blit_text_center
 
 class Game:
-    def __init__(self, fps=60):
+    """
+    Клас, що керує основним циклом гри, меню, рівнями, налаштуваннями та рекордами.
+    """
+    def __init__(self):
+        """
+        Ініціалізує об’єкт гри з базовими параметрами та компонентами.
+        """
         self.car = None
         self.game_info = None
         self.level = None
         pygame.font.init()
         self.running = True
-        self.fps = fps
+        self.fps = 60
         self.level_number = 1
         self.settings = st.Settings() # Додано до налаштувань
         self.width, self.height = 800, 600
-        self.win = pygame.display.set_mode((self.width, self.height))
+        self.win = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         self.menu = mn.Menu(self.win, self.width, self.height)
-        self.settings_menu = stm.SettingsMenu(self.win, self.width, self.height, self.settings) # Додано до налаштувань
-        self.records = r.Records()  # Додаємо екземпляр Records
+        self.settings_menu = stm.SettingsMenu(self.win, self.width, self.height, self.settings)
+        self.records = r.Records()  # Екземпляр Records
 
     def run(self):
+        """
+        Запускає основний цикл гри, що обробляє вибір користувача з меню
+        та перенаправляє на відповідні функції (або виходить з програми)
+        """
         while self.running:
             selected_option = self.show_menu()
             if selected_option == 0:  # Почати гру
@@ -40,9 +50,16 @@ class Game:
         pygame.quit()
 
     def show_settings(self):
+        """
+        Відкриває меню налаштувань гри
+        """
         self.settings_menu.run() # Додано до налаштувань
 
     def show_menu(self):
+        """
+        Відображає головне меню та повертає вибір користувача.
+        :return: Індекс обраного пункту меню (0-3) або None при закритті вікна.
+        """
         while self.running:
             self.menu.draw()
             for event in pygame.event.get():
@@ -54,6 +71,10 @@ class Game:
                 return selected
 
     def play_levels(self):
+        """
+        Керує проходженням усіх рівнів гри (1–5).
+        Цикл завершується при поверненні в меню або після проходження всіх рівнів.
+        """
         while self.level_number <= 5:
             result = self.play_level()
             if result == "menu":  # Якщо гравець програв, повертаємось у меню
@@ -62,10 +83,14 @@ class Game:
         self.level_number = 1  # Після завершення повертаємося в меню
 
     def play_level(self):
+        """
+        Керує одним рівнем гри (рухом машини, зіткненнями та переходом до наступного рівня).
+        :return: "menu" при програші, "next_level" при проходженні рівня.
+        """
         self.level = l.Level()
         self.game_info = gi.GameInfo()
         car_image_path = f"imgs/{self.settings.car_color}-car.png"
-        self.car = car.Car(4, 4, car_image_path)
+        self.car = car.Car(6, 4, car_image_path)
         self.win = pygame.display.set_mode((self.level.width, self.level.height))
         pygame.display.set_caption(f"Car Racing")
         clock = pygame.time.Clock()
@@ -100,6 +125,10 @@ class Game:
             self.draw()
 
     def show_records(self):
+        """
+        Відображає екран із рекордами гри.
+        Показує найвищий пройдений рівень і найкращі часи для кожного рівня (1–5).
+        """
         font = pygame.font.SysFont("times", 44)
         running = True
         while running:
@@ -108,16 +137,21 @@ class Game:
             if not record_info:
                 text = font.render("Рекордів ще немає!", True, (255, 255, 255))
                 self.win.blit(text,
-                              (self.width // 2 - text.get_width() // 2, self.height // 2 - text.get_height() // 2))
+                              (self.width // 2 - text.get_width() // 2,
+                               self.height // 2 - text.get_height() // 2))
             else:
-                level_text = font.render(f"Найвищий пройдений рівень: {record_info['level']}", True, (255, 255, 255))
-                self.win.blit(level_text, (self.width // 2 - level_text.get_width() // 2, self.height // 2 - 200))
+                level_text = font.render(f"Найвищий пройдений рівень: {record_info['level']}",
+                                         True, (255, 255, 255))
+                self.win.blit(level_text,
+                              (self.width // 2 - level_text.get_width() // 2, self.height // 2 - 200))
 
                 # Відображаємо найкращі часи для кожного рівня
                 for i in range(1, 6):
-                    time_text = font.render(f"Рівень {i}: {record_info['best_times'][i]}s", True, (255, 255, 255))
+                    time_text = font.render(f"Рівень {i}: {record_info['best_times'][i]}s",
+                                            True, (255, 255, 255))
                     self.win.blit(time_text,
-                                  (self.width // 2 - time_text.get_width() // 2, self.height // 2 - 100 + (i - 1) * 50))
+                                  (self.width // 2 - time_text.get_width() // 2,
+                                   self.height // 2 - 100 + (i - 1) * 50))
 
             pygame.display.update()
 
@@ -129,6 +163,9 @@ class Game:
                     running = False
 
     def handle_events(self):
+        """
+        Обробляє події Pygame (закриття вікна, зміна розміру, натискання клавіш).
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -147,6 +184,10 @@ class Game:
             self.car.handle_movement(keys)
 
     def draw(self):
+        """
+        Малює поточний стан гри на екрані.
+        Відображає рівень, машину та текстову інформацію (рівень, таймер, життя).
+        """
         self.level.draw(self.win)
 
         font = pygame.font.SysFont("times", 30)

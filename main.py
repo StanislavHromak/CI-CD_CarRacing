@@ -2,7 +2,6 @@ import game as g
 import argparse
 
 if __name__ == "__main__":
-    # Налаштування argparse
     parser = argparse.ArgumentParser(description="Racing Game with difficulty levels")
     parser.add_argument(
         "--difficulty",
@@ -12,9 +11,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Створюємо гру і передаємо початковий рівень складності
     game = g.Game()
-    # Перекладаємо англійські назви в українські для сумісності з Settings
     difficulty_mapping = {
         "easy": "простий",
         "medium": "середній",

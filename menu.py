@@ -2,7 +2,16 @@ import pygame
 import time
 
 class Menu:
+    """
+    Клас для відображення та керування головним меню гри 'CAR RACING'.
+    """
     def __init__(self, win, width, height):
+        """
+        Ініціалізує об’єкт меню з заданими параметрами.
+        :param win: Вікно Pygame для відображення.
+        :param width: Ширина вікна.
+        :param height: Висота вікна.
+        """
         self.win = win
         self.width = width
         self.height = height
@@ -17,6 +26,11 @@ class Menu:
         self.selected = 0  # Індекс обраної кнопки
 
     def draw(self):
+        """
+        Малює головне меню на екрані.
+        Відображає заголовок 'CAR RACING' червоним кольором і кнопки меню,
+        де обрана кнопка виділена жовтим кольором.
+        """
         self.win.fill((0, 0, 0))
         title_text = self.title_font.render("CAR RACING", True, (255, 0, 0))  # Білий колір
         title_rect = title_text.get_rect(center=(self.width // 2, 100))
@@ -29,6 +43,10 @@ class Menu:
         pygame.display.update()
 
     def handle_input(self):
+        """
+        Обробляє введення користувача для навігації по меню.
+        :return: Індекс обраної кнопки (0–3) при натисканні Enter, інакше None.
+        """
         keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:
             self.selected = (self.selected + 1) % len(self.buttons)
