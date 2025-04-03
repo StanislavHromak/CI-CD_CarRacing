@@ -16,7 +16,7 @@ class Records:
         Перетворює ключі best_times із рядків у цілі числа.
         """
         try:
-            with open("records.json", "r", encoding="utf-8") as f:
+            with open("../records.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
                 self.best_times = {int(k): v for k, v in data.get("best_times", {}).items()}
                 self.record_level = data.get("level", 0)
@@ -32,7 +32,7 @@ class Records:
             "best_times": self.best_times,
             "level": self.record_level
         }
-        with open("records.json", "w", encoding="utf-8") as f:
+        with open("../records.json", "w", encoding="utf-8") as f:
             json_string = json.dumps(data)
             f.write(json_string)
 

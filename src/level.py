@@ -10,8 +10,8 @@ class Level:
         Ініціалізує об’єкт рівня з масштабованими зображеннями та масками.
         """
         self.grass = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5) # Трава
-        self.track = scale_image(pygame.image.load("imgs/track.png"), 800/900) # Траса
-        self.track_border = scale_image(pygame.image.load("imgs/track-border.png"), 800/900) # Краї траси
+        self.track = scale_image(pygame.image.load("imgs/track.png"), 800 / 900) # Траса
+        self.track_border = scale_image(pygame.image.load("imgs/track-border.png"), 800 / 900) # Краї траси
         self.finish = pygame.image.load("imgs/finish.png") # фініш
         # Список зображень і їх позицій для відображення.
         self.images = [(self.grass, (0, 0)), (self.track, (0, 0)), (self.finish, (130, 250)),

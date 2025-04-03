@@ -1,11 +1,10 @@
 import pygame
 import level as l
 import game_info as gi
-import collision as cl
 import settings as st
 import settings_menu as stm
 import records as r
-import car
+from src import car, collision as cl
 import menu as mn
 from utils import blit_text_center
 
