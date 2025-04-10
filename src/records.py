@@ -11,16 +11,23 @@ class Records:
 
     def load_records(self):
         """
-        Завантажує рекорди з файлу 'records.json'
-        Якщо файл не існує, ініціалізує порожні значення.
+        Завантажує рекорди з файлу 'records.json'.
+        Якщо файл не існує або порожній, ініціалізує порожні значення.
         Перетворює ключі best_times із рядків у цілі числа.
         """
         try:
             with open("../records.json", "r", encoding="utf-8") as f:
-                data = json.load(f)
-                self.best_times = {int(k): v for k, v in data.get("best_times", {}).items()}
-                self.record_level = data.get("level", 0)
+                content = f.read().strip()
+                if content:  # Перевіряємо, чи є дані в файлі
+                    data = json.loads(content)
+                    self.best_times = {int(k): v for k, v in data.get("best_times", {}).items()}
+                    self.record_level = data.get("level", 0)
+                else:
+                    # Якщо файл порожній, ініціалізуємо порожні значення
+                    self.best_times = {}
+                    self.record_level = 0
         except FileNotFoundError:
+            # Якщо файл не існує, ініціалізуємо порожні значення
             self.best_times = {}
             self.record_level = 0
 

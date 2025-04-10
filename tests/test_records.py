@@ -39,3 +39,42 @@ class TestRecords(unittest.TestCase):
             "level": 3
         }
         mock_file().write.assert_called_with(json.dumps(expected_data, ensure_ascii=False))
+
+    @patch("builtins.open", new_callable=mock_open)
+    def test_update_records(self, mock_file):
+        # Створюємо екземпляр класу Records
+        records = Records()
+
+        # Оновлюємо рекорди
+        records.update_records(3, 18)  # Рівень 3, час 18 секунд
+
+        # Перевіряємо, чи були оновлені рекорди
+        self.assertEqual(records.best_times[3], 18)
+        self.assertEqual(records.record_level, 3)
+
+        # Перевіряємо, чи був викликаний метод save_records
+        mock_file.assert_called_with("../records.json", "w", encoding="utf-8")
+
+    @patch("builtins.open", new_callable=mock_open, read_data='{"best_times": {"1": 10, "2": 15}, "level": 2}')
+    def test_get_record_info(self, mock_file):
+        # Створюємо екземпляр класу Records
+        records = Records()
+
+        # Перевіряємо, чи повертається правильна інформація
+        record_info = records.get_record_info()
+        expected_info = {
+            "level": 2,
+            "best_times": {1: 10, 2: 15, 3: 0, 4: 0, 5: 0}
+        }
+        self.assertEqual(record_info, expected_info)
+
+    @patch("builtins.open", new_callable=mock_open, read_data='{}')
+    def test_get_record_info_when_no_records(self, mock_file):
+        # Створюємо екземпляр класу Records
+        records = Records()
+        result = records.get_record_info()
+        self.assertIsNone(result)  # Має бути None, оскільки рекордів немає
+
+
+if __name__ == "main":
+    unittest.main()
