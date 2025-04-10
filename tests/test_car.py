@@ -8,7 +8,6 @@ class TestCar(unittest.TestCase):
     @pytest.fixture(autouse=True)
     def setup_car(self):
         pygame.init()
-        # Створюємо справжній Surface
         real_surface = pygame.Surface((50, 50))
 
         with patch("src.car.pygame.image.load", return_value=real_surface), \
@@ -24,6 +23,33 @@ class TestCar(unittest.TestCase):
         assert self.car.angle == 0
         assert self.car.max_vel == 5
         assert self.car.rotation_vel == 5
+
+    def test_rotate_left(self):
+        self.car.rotate(left=True)
+        assert self.car.angle == 5
+
+    def test_rotate_right(self):
+        self.car.rotate(right=True)
+        assert self.car.angle == -5
+
+    def test_move_forward(self):
+        self.car.angle = 0
+        self.car.move_forward()
+        assert self.car.vel == pytest.approx(0.05)
+        assert self.car.y < 200  # бо рух вперед зменшує y
+
+    def test_move_backward(self):
+        self.car.angle = 0
+        self.car.move_backward()
+        assert self.car.vel == pytest.approx(-0.05)
+        assert self.car.y > 200  # бо назад — y зростає
+
+    def test_reduce_speed(self):
+        self.car.vel = 1
+        self.car.angle = 0
+        self.car.reduce_speed()
+        assert self.car.vel == pytest.approx(0.975)
+        assert self.car.y < 200
 
 
 
