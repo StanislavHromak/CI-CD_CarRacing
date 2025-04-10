@@ -79,3 +79,41 @@ class TestGame:
 
         assert result == "next_level"
         mock_collision.assert_called()
+
+    @patch('pygame.event.get', return_value=[])
+    def test_show_menu_returns_selected(self, mock_event, game):
+        game.menu.draw = MagicMock()
+        game.menu.handle_input = MagicMock(return_value=2)
+        assert game.show_menu() == 2
+
+    @patch('pygame.event.get', return_value=[MagicMock(type=pygame.QUIT)])
+    def test_show_menu_handles_quit(self, mock_event, game):
+        game.menu.draw = MagicMock()
+        game.menu.handle_input = MagicMock(return_value=None)
+        result = game.show_menu()
+        assert result is None
+        assert not game.running
+
+    def test_show_settings_runs_menu(self, game):
+        game.settings_menu.run = MagicMock()
+        game.show_settings()
+        game.settings_menu.run.assert_called_once()
+
+    @patch('pygame.event.get', return_value=[])
+    def test_show_records_no_records(self, mock_event, game):
+        game.records.get_record_info = MagicMock(return_value=None)
+        game.win = MagicMock()
+        font_mock = MagicMock()
+        text_mock = MagicMock()
+        text_mock.get_width.return_value = 100
+        text_mock.get_height.return_value = 50
+        font_mock.render.return_value = text_mock
+
+        with patch('pygame.font.SysFont', return_value=font_mock):
+            with patch('pygame.display.update'):
+                event = MagicMock()
+                event.type = pygame.KEYDOWN
+                mock_event.return_value = [event]
+                game.show_records()
+
+        assert game.records.get_record_info.called
