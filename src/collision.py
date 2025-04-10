@@ -1,10 +1,10 @@
 import pygame
+from src.utils import blit_text_center
 import math
-from utils import blit_text_center
 
 class Collision:
     """
-    Клас обробки зіткнення машини із краєм траси і фінішем
+    Клас обробки зіткнення машини із краєм траси та фінішем
     """
     @staticmethod
     def handle_collision(player_car, game_info, level, win, font, lives, difficulty):
