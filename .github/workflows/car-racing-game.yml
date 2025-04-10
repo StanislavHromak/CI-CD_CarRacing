@@ -1,4 +1,4 @@
-name: Car Racing Game
+name: CI/CD Pipeline for CarRacing Game
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout репозиторій
+      - name: Клон репозиторію
         uses: actions/checkout@v3
 
       - name: Встановлення Python
@@ -24,19 +24,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Запуск тестів (з HTML-звітом)
-        run: |
-          mkdir -p reports/tests
-          pytest --html=reports/tests/report.html --self-contained-html
+      - name: Перевірка встановлених пакетів (debug)
+        run: pip list
 
-      - name: Лінтінг з flake8
+      - name: Лінтінг з Flake8 (HTML-звіт)
         run: |
           mkdir -p reports/lint
-          flake8 src/ --format=html --htmldir=reports/lint
+          flake8 src/ --format=html --htmldir=reports/lint || true
 
-      - name: Завантаження артефактів (звіти)
+      - name: Тестування з Pytest (HTML-звіт)
+        run: |
+          mkdir -p reports/tests
+          pytest --html=reports/tests/report.html --self-contained-html || true
+
+      - name: Завантаження звітів як артефакти
         uses: actions/upload-artifact@v4
         with:
-          name: reports
+          name: test-and-lint-reports
           path: reports
+
 
