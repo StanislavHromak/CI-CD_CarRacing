@@ -51,6 +51,52 @@ class TestCar(unittest.TestCase):
         assert self.car.vel == pytest.approx(0.975)
         assert self.car.y < 200
 
+    def test_reset_default(self):
+        self.car.x, self.car.y, self.car.vel, self.car.angle = 100, 100, 3, 30
+        self.car.reset()
+        assert self.car.x == 180
+        assert self.car.y == 200
+        assert self.car.vel == 0
+        assert self.car.angle == 0
+
+    def test_reset_custom(self):
+        self.car.reset(50, 60)
+        assert self.car.x == 50
+        assert self.car.y == 60
+        assert self.car.angle == 0
+        assert self.car.vel == 0
+
+    def test_handle_movement_forward(self):
+        keys = {
+            pygame.K_w: True,
+            pygame.K_s: False,
+            pygame.K_a: False,
+            pygame.K_d: False,
+        }
+        self.car.handle_movement(keys)
+        assert self.car.vel > 0
+
+    def test_handle_movement_rotation(self):
+        keys = {
+            pygame.K_w: False,
+            pygame.K_s: False,
+            pygame.K_a: True,
+            pygame.K_d: False,
+        }
+        self.car.handle_movement(keys)
+        assert self.car.angle == 5
+
+    def test_collide(self):
+        self.car.x, self.car.y = 100, 150
+        mock_mask = MagicMock()
+        mock_mask.overlap.return_value = (5, 5)
+        result = self.car.collide(mock_mask, x=90, y=140)
+        assert result == (5, 5)
+        mock_mask.overlap.assert_called_once()
+
+if __name__ == "__main__":
+    unittest.main()
+
 
 
 

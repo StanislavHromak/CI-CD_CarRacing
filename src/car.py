@@ -1,6 +1,6 @@
 import pygame
 import math
-from utils import scale_image, blit_rotate_center
+from src.utils import scale_image, blit_rotate_center
 
 class Car:
     """
