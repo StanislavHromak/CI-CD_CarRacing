@@ -1,4 +1,5 @@
 import time
+import math
 
 class GameInfo:
     """
@@ -22,6 +23,6 @@ class GameInfo:
         :return: Кількість секунд, що минули з моменту виклику start_game. Повертає 0, якщо гра ще не розпочалася.
         """
         if self.started:
-            elapsed = round(time.time() - self.start_time)
+            elapsed = math.ceil(time.time() - self.start_time)
             return elapsed
         return 0
