@@ -1,9 +1,9 @@
 import pygame
-from utils import scale_image
+from src.utils import scale_image
 
 class Level:
     """
-    Клас
+    Клас, що представляє рівень гри
     """
     def __init__(self):
         """
