@@ -1,12 +1,12 @@
 import pygame
-from src import level
-from src import game_info
-from src import settings
-from src import settings_menu
-from src import records
-from src import collision
+from src import level as l
+from src import game_info as gi
+from src import settings as st
+from src import settings_menu as stm
+from src import records as r
+from src import collision as cl
 from src import car
-from src import menu
+from src import menu as mn
 from src.utils import blit_text_center
 
 class Game:
@@ -24,12 +24,12 @@ class Game:
         self.running = True
         self.fps = 60
         self.level_number = 1
-        self.settings = settings.Settings()
+        self.settings = st.Settings()
         self.width, self.height = 800, 600
         self.win = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
-        self.menu = menu.Menu(self.win, self.width, self.height)
-        self.settings_menu = settings_menu.SettingsMenu(self.win, self.width, self.height, self.settings)
-        self.records = records.Records()
+        self.menu = mn.Menu(self.win, self.width, self.height)
+        self.settings_menu = stm.SettingsMenu(self.win, self.width, self.height, self.settings)
+        self.records = r.Records()
 
     def run(self):
         """
@@ -87,8 +87,8 @@ class Game:
         Керує одним рівнем гри (рухом машини, зіткненнями та переходом до наступного рівня).
         :return: "menu" при програші, "next_level" при проходженні рівня.
         """
-        self.level = level.Level()
-        self.game_info = game_info.GameInfo()
+        self.level = l.Level()
+        self.game_info = gi.GameInfo()
         car_image_path = f"imgs/{self.settings.car_color}-car.png"
         self.car = car.Car(6, 4, car_image_path)
         self.win = pygame.display.set_mode((self.level.width, self.level.height))
@@ -109,7 +109,7 @@ class Game:
                 continue
 
             self.car.move()
-            result = collision.Collision.handle_collision(self.car, self.game_info, self.level, self.win,
+            result = cl.Collision.handle_collision(self.car, self.game_info, self.level, self.win,
                                                pygame.font.SysFont("arial", 40, bold=True),
                                                self.settings.lives, self.settings.difficulty)
 

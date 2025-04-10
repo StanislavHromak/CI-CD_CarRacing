@@ -35,5 +35,4 @@ def blit_text_center(win, font, text, color):
     :param color: Колір тексту у форматі RGB
     """
     render = font.render(text, 1, color)
-    win.blit(render, (win.get_width()/2 - render.get_width() /
-                      2, win.get_height()/2 - render.get_height()/2))
+    win.blit(render, (win.get_width()/2 - render.get_width()/2, win.get_height()/2 - render.get_height()/2))
