@@ -117,3 +117,49 @@ class TestGame:
                 game.show_records()
 
         assert game.records.get_record_info.called
+
+    def test_handle_events_quit(self, monkeypatch, game):
+        event = MagicMock()
+        event.type = pygame.QUIT
+        monkeypatch.setattr(pygame.event, "get", lambda: [event])
+
+        game.game_info = MagicMock()
+        game.game_info.started = False
+
+        game.handle_events()
+        assert not game.running
+
+    def test_handle_events_resize(self, monkeypatch, game):
+        event = MagicMock()
+        event.type = pygame.VIDEORESIZE
+        event.w = 1024
+        event.h = 768
+
+        game.level = MagicMock()
+        game.game_info = MagicMock()
+        game.game_info.started = False
+
+        monkeypatch.setattr(pygame.event, "get", lambda: [event])
+        monkeypatch.setattr(pygame.display, "set_mode", lambda *a, **k: MagicMock())
+
+        game.handle_events()
+
+        assert game.width == 1024
+        assert game.height == 768
+        game.level.update_size.assert_called_once_with(1024, 768)
+
+    def test_draw(self, game):
+        game.level = MagicMock()
+        game.car = MagicMock()
+        game.game_info = MagicMock()
+        game.game_info.get_time.return_value = 12
+        game.settings.lives = 3
+        game.level_number = 2
+        game.win = MagicMock()
+
+        with patch("pygame.font.SysFont", return_value=MagicMock(render=MagicMock(get_width=lambda: 0, get_height=lambda: 0))), \
+             patch("pygame.display.update"):
+            game.draw()
+
+        game.level.draw.assert_called_once()
+        game.car.draw.assert_called_once()

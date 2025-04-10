@@ -1,12 +1,12 @@
 import pygame
-import level as l
-import game_info as gi
-import settings as st
-import settings_menu as stm
-import records as r
+from src import level as l
+from src import game_info as gi
+from src import settings as st
+from src import settings_menu as stm
+from src import records as r
 from src import car, collision as cl
-import menu as mn
-from utils import blit_text_center
+from src import menu as mn
+from src.utils import blit_text_center
 
 class Game:
     """
@@ -23,12 +23,12 @@ class Game:
         self.running = True
         self.fps = 60
         self.level_number = 1
-        self.settings = st.Settings() # Додано до налаштувань
+        self.settings = st.Settings()
         self.width, self.height = 800, 600
         self.win = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         self.menu = mn.Menu(self.win, self.width, self.height)
         self.settings_menu = stm.SettingsMenu(self.win, self.width, self.height, self.settings)
-        self.records = r.Records()  # Екземпляр Records
+        self.records = r.Records()
 
     def run(self):
         """
