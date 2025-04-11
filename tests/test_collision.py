@@ -1,14 +1,26 @@
 from unittest.mock import Mock, patch
 from src.collision import Collision
 
+
 class TestCollision:
+    """
+    Клас для тестування функціональності класу Collision.
+    Перевіряє обробку зіткнень машини з межами траси та фінішем.
+    """
     @patch("src.collision.blit_text_center")
     @patch("pygame.display.update")
     @patch("pygame.time.wait")
     def test_collision_with_border_game_over(self, mock_wait, mock_update, mock_blit):
+        """
+        Перевіряє зіткнення з межами траси, що призводить до програшу.
+        Очікує відображення повідомлення про програш і повернення до меню.
+        :param mock_wait: Замоканий метод pygame.time.wait.
+        :param mock_update: Замоканий метод pygame.display.update.
+        :param mock_blit: Замоканий метод blit_text_center.
+        """
         # Підготовка моків
         player_car = Mock()
-        player_car.collide.side_effect = [True]  # Створити зіткнення з межами
+        player_car.collide.side_effect = [True]  # Зіткнення з межами
         game_info = Mock()
         game_info.started = True
         level = Mock()
@@ -32,8 +44,14 @@ class TestCollision:
     @patch("pygame.display.update")
     @patch("pygame.time.wait")
     def test_collision_with_border_not_game_over(self, mock_wait, mock_update):
+        """
+        Перевіряє зіткнення з межами траси, що не призводить до програшу.
+        Очікує зменшення кількості життів і скидання позиції машини.
+        :param mock_wait: Замоканий метод pygame.time.wait.
+        :param mock_update: Замоканий метод pygame.display.update.
+        """
         player_car = Mock()
-        player_car.collide.side_effect = [True]  # Створити зіткнення з межами
+        player_car.collide.side_effect = [True]  # Зіткнення з межами
         player_car.x = 100
         player_car.y = 200
         player_car.angle = 90
@@ -55,6 +73,13 @@ class TestCollision:
     @patch("pygame.display.update")
     @patch("pygame.time.wait")
     def test_collision_with_finish(self, mock_wait, mock_update, mock_blit):
+        """
+        Перевіряє зіткнення з фінішем.
+        Очікує відображення повідомлення про перемогу і повернення кортежу ("next_level", час).
+        :param mock_wait: Замоканий метод pygame.time.wait.
+        :param mock_update: Замоканий метод pygame.display.update.
+        :param mock_blit: Замоканий метод blit_text_center.
+        """
         player_car = Mock()
         player_car.collide.side_effect = [False, True]  # Нема зіткнення з межами, але є з фінішем
         game_info = Mock()

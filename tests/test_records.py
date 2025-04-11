@@ -5,8 +5,17 @@ from src.records import Records
 
 
 class TestRecords(unittest.TestCase):
+    """
+    Клас для тестування функціональності класу Records.
+    Перевіряє завантаження, збереження, оновлення та отримання інформації про рекорди.
+    """
     @patch("builtins.open", new_callable=mock_open, read_data='{"best_times": {"1": 30, "2": 25}, "level": 2}')
     def test_load_records(self, mock_file):
+        """
+        Перевіряє завантаження рекордів із файлу.
+        Очікує правильне заповнення best_times і record_level із файлу JSON.
+        :param mock_file: Замоканий об’єкт файлу для імітації читання.
+        """
         # Створюємо екземпляр класу Records
         records = Records()
 
@@ -19,6 +28,11 @@ class TestRecords(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open)
     def test_save_records(self, mock_file):
+        """
+        Перевіряє збереження рекордів у файл.
+        Очікує, що дані best_times і record_level записуються у файл JSON.
+        :param mock_file: Замоканий об’єкт файлу для імітації читання та запису.
+        """
         # Створюємо екземпляр класу Records
         records = Records()
 
@@ -42,6 +56,11 @@ class TestRecords(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open)
     def test_update_records(self, mock_file):
+        """
+        Перевіряє оновлення рекордів для нового рівня та часу.
+        Очікує оновлення best_times і record_level із збереженням у файл.
+        :param mock_file: Замоканий об’єкт файлу для імітації запису.
+        """
         # Створюємо екземпляр класу Records
         records = Records()
 
@@ -57,6 +76,11 @@ class TestRecords(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open, read_data='{"best_times": {"1": 10, "2": 15}, "level": 2}')
     def test_get_record_info(self, mock_file):
+        """
+        Перевіряє отримання інформації про рекорди.
+        Очікує повернення словника з найвищим рівнем і найкращими часами для рівнів 1–5.
+        :param mock_file: Замоканий об’єкт файлу для імітації читання.
+        """
         # Створюємо екземпляр класу Records
         records = Records()
 
@@ -70,6 +94,11 @@ class TestRecords(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open, read_data='{}')
     def test_get_record_info_when_no_records(self, mock_file):
+        """
+        Перевіряє отримання інформації, коли рекордів немає.
+        Очікує повернення None, якщо record_level дорівнює 0.
+        :param mock_file: Замоканий об’єкт файлу для імітації читання.
+        """
         # Створюємо екземпляр класу Records
         records = Records()
         result = records.get_record_info()

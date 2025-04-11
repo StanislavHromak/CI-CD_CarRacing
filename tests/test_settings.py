@@ -5,17 +5,23 @@ from src.settings import Settings
 class TestSettings(unittest.TestCase):
 
     def setUp(self):
-        """Ініціалізуємо об'єкт Settings перед кожним тестом."""
+        """
+        Ініціалізує об'єкт Settings перед кожним тестом.
+        """
         self.settings = Settings()
 
     def test_initial_values(self):
-        """Тестуємо початкові значення налаштувань."""
+        """
+        Тестує початкові значення налаштувань.
+        """
         self.assertEqual(self.settings.car_color, "red")
         self.assertEqual(self.settings.difficulty, "складний")
         self.assertEqual(self.settings.lives, 1)
 
     def test_set_car_color(self):
-        """Тестуємо метод set_car_color."""
+        """
+        Тестує метод set_car_color.
+        """
         self.settings.set_car_color("червоний")
         self.assertEqual(self.settings.car_color, "red")
 
@@ -29,7 +35,9 @@ class TestSettings(unittest.TestCase):
         self.assertEqual(self.settings.car_color, "red")
 
     def test_set_difficulty(self):
-        """Тестуємо метод set_difficulty."""
+        """
+        Тестує метод set_difficulty.
+        """
         self.settings.set_difficulty("простий")
         self.assertEqual(self.settings.difficulty, "простий")
         self.assertEqual(self.settings.lives, 10)
@@ -43,7 +51,9 @@ class TestSettings(unittest.TestCase):
         self.assertEqual(self.settings.lives, 1)
 
     def test_reset_lives(self):
-        """Тестуємо метод reset_lives."""
+        """
+        Тестує метод reset_lives.
+        """
         self.settings.set_difficulty("простий")
         self.settings.reset_lives()
         self.assertEqual(self.settings.lives, 10)
